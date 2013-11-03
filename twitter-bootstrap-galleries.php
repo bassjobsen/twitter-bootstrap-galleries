@@ -121,7 +121,7 @@ function bssetstylesheets()
 endif;	
 add_action( 'wp_enqueue_scripts', 'bssetstylesheets', 99 );
 
-function twitterbootstrap_galleries_get_grid_classes($numberofcolumns)
+function get_grid_classes($numberofcolumns)
 {
 /* the grid display */
 /*
