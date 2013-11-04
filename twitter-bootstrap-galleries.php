@@ -109,18 +109,6 @@ include(sprintf("%s/templates/settings.php", dirname(__FILE__)));
 } 
 // END public function plugin_settings_page() 
 
-
-function init()
-{
-if( !function_exists( 'bssetstylesheets' ) ):
-function bssetstylesheets()
-{
-	wp_register_style ( 'twitterbootstrap-galleries', plugins_url( 'css/twitterbootstrap-galleries.css' , __FILE__ ));
-    wp_enqueue_style ( 'twitterbootstrap-galleries');
-}
-endif;	
-add_action( 'wp_enqueue_scripts', 'bssetstylesheets', 99 );
-
 function get_grid_classes($numberofcolumns)
 {
 /* the grid display */
@@ -161,15 +149,23 @@ switch($numberofcolumns)
 return $classes;
 }
 
+
+function init()
+{
+if( !function_exists( 'bssetstylesheets' ) ):
+function bssetstylesheets()
+{
+	wp_register_style ( 'twitterbootstrap-galleries', plugins_url( 'css/twitterbootstrap-galleries.css' , __FILE__ ));
+    wp_enqueue_style ( 'twitterbootstrap-galleries');
+}
+endif;	
+add_action( 'wp_enqueue_scripts', 'bssetstylesheets', 99 );
+
+
+
 remove_shortcode('gallery');
-add_shortcode('gallery', 'gallery_shortcode_bootstrap');
-
-
-
-
+add_shortcode('gallery', array('Twitterbootstrap_Galleries','gallery_shortcode_bootstrap'));
 }
-}
-
 
 /**
  * The Gallery shortcode.
@@ -286,7 +282,7 @@ function gallery_shortcode_bootstrap($attr) {
 
 	$i = 1;
 	$numberofcolumns = get_option('number_of_columns', 4 );	
-	$classes = get_grid_classes($numberofcolumns);
+	$classes = Twitterbootstrap_Galleries::get_grid_classes($numberofcolumns);
 	
 	foreach ( $attachments as $id => $attachment ) {
 		if ( ! empty( $link ) && 'file' === $link )
@@ -350,6 +346,12 @@ function gallery_shortcode_bootstrap($attr) {
 
 	return $output;
 }
+
+
+}
+
+
+
 }
 
 if(class_exists('Twitterbootstrap_Galleries')) 
