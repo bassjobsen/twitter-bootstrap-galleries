@@ -3,7 +3,7 @@
 Plugin Name: Twitter Bootstrap Galleries
 Plugin URI: https://github.com/bassjobsen/twitterbootstrap-galleries
 Description: Wraps the content of a WordPress media gallery in a Twitter's Bootstrap grid
-Version: 1.0
+Version: 1.0.1
 Author: Bass Jobsen
 Author URI: http://bassjobsen.weblogs.fm/
 License: GPLv2
@@ -28,6 +28,47 @@ License: GPLv2
 
 if(!class_exists('Twitterbootstrap_Galleries')) 
 { 
+
+function twitterbootstrap_galleries_get_grid_classes($numberofcolumns)
+{
+/* the grid display */
+/*
+|  	columns		| mobile 	| tablet 	| desktop	|per page 	|
+----------------------------------------------------|-----------|
+|		1		|	1		|	1		|	1		| 	10		|
+|---------------------------------------------------|-----------|
+|		2		|	1		|	2		|	2		|	10		|
+|---------------------------------------------------|-----------|
+|		3		|	1		|	1		|	3		|	9		|
+|---------------------------------------------------|-----------|
+|		4		|	1		|	2		|	4		|	12		|
+|---------------------------------------------------|-----------|
+|		5		|	n/a		|	n/a		|	n/a		|	n/a	    |
+|---------------------------------------------------|-----------|
+|		6		|	2		|	4		|	6		|	12		|
+|---------------------------------------------------|-----------|
+|		>=6		|	n/a		|	n/a		|	n/a		|	n/a		|
+|---------------------------------------------------------------|
+* 
+* 
+*/
+
+
+switch($numberofcolumns)
+{
+	
+	case 6: $classes = 'col-xs-6 col-sm-3 col-md-2'; break;
+	case 4: $classes = 'col-xs-12 col-sm-6 col-md-3'; break;
+	case 3: $classes = 'col-xs-12 col-sm-12 col-md-4'; break;
+	case 31: $classes = 'col-xs-12 col-sm-6 col-md-4'; break;
+	case 2: $classes = 'col-xs-12 col-sm-6 col-md-6'; break;
+	default: $classes = 'col-xs-12 col-sm-12 col-md-12';
+	
+}
+
+return $classes;
+}
+
       	
 class Twitterbootstrap_Galleries
 { 
@@ -109,46 +150,6 @@ include(sprintf("%s/templates/settings.php", dirname(__FILE__)));
 } 
 // END public function plugin_settings_page() 
 
-function get_grid_classes($numberofcolumns)
-{
-/* the grid display */
-/*
-|  	columns		| mobile 	| tablet 	| desktop	|per page 	|
-----------------------------------------------------|-----------|
-|		1		|	1		|	1		|	1		| 	10		|
-|---------------------------------------------------|-----------|
-|		2		|	1		|	2		|	2		|	10		|
-|---------------------------------------------------|-----------|
-|		3		|	1		|	1		|	3		|	9		|
-|---------------------------------------------------|-----------|
-|		4		|	1		|	2		|	4		|	12		|
-|---------------------------------------------------|-----------|
-|		5		|	n/a		|	n/a		|	n/a		|	n/a	    |
-|---------------------------------------------------|-----------|
-|		6		|	2		|	4		|	6		|	12		|
-|---------------------------------------------------|-----------|
-|		>=6		|	n/a		|	n/a		|	n/a		|	n/a		|
-|---------------------------------------------------------------|
-* 
-* 
-*/
-
-
-switch($numberofcolumns)
-{
-	
-	case 6: $classes = 'col-xs-6 col-sm-3 col-md-2'; break;
-	case 4: $classes = 'col-xs-12 col-sm-6 col-md-3'; break;
-	case 3: $classes = 'col-xs-12 col-sm-12 col-md-4'; break;
-	case 31: $classes = 'col-xs-12 col-sm-6 col-md-4'; break;
-	case 2: $classes = 'col-xs-12 col-sm-6 col-md-6'; break;
-	default: $classes = 'col-xs-12 col-sm-12 col-md-12';
-	
-}
-
-return $classes;
-}
-
 
 function init()
 {
@@ -174,7 +175,7 @@ add_shortcode('gallery', array('Twitterbootstrap_Galleries','gallery_shortcode_b
  * WordPress images on a post.
  */
  
-function gallery_shortcode_bootstrap($attr) {
+public static function gallery_shortcode_bootstrap($attr) {
 	$post = get_post();
 
 	static $instance = 0;
@@ -282,7 +283,7 @@ function gallery_shortcode_bootstrap($attr) {
 
 	$i = 1;
 	$numberofcolumns = get_option('number_of_columns', 4 );	
-	$classes = Twitterbootstrap_Galleries::get_grid_classes($numberofcolumns);
+	$classes = twitterbootstrap_galleries_get_grid_classes($numberofcolumns);
 	
 	foreach ( $attachments as $id => $attachment ) {
 		if ( ! empty( $link ) && 'file' === $link )
@@ -295,7 +296,7 @@ function gallery_shortcode_bootstrap($attr) {
         $image_output = preg_replace('/height="[0-9]+"/','',$image_output);
         $image_output = preg_replace('/width="[0-9]+"/','',$image_output);
         $image_output = str_replace('class="', 'class="img-responsive ', $image_output);
-		$image_meta  = wp_get_attachment_metadata( $id );
+ 		$image_meta  = wp_get_attachment_metadata( $id );
 
 		$orientation = '';
 		if ( isset( $image_meta['height'], $image_meta['width'] ) )
