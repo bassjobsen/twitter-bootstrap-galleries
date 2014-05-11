@@ -57,12 +57,12 @@ function twitterbootstrap_galleries_get_grid_classes($numberofcolumns)
 switch($numberofcolumns)
 {
 	
-	case 6: $classes = 'col-xs-6 col-sm-3 col-md-2'; break;
-	case 4: $classes = 'col-xs-12 col-sm-6 col-md-3'; break;
-	case 3: $classes = 'col-xs-12 col-sm-12 col-md-4'; break;
-	case 31: $classes = 'col-xs-12 col-sm-6 col-md-4'; break;
-	case 2: $classes = 'col-xs-12 col-sm-6 col-md-6'; break;
-	default: $classes = 'col-xs-12 col-sm-12 col-md-12';
+	case 6: $classes = 'span2'; break;
+	case 4: $classes = 'span3'; break;
+	case 3: $classes = 'span4'; break;
+	case 31: $classes = 'span4'; break;
+	case 2: $classes = 'span6'; break;
+	default: $classes = 'span12';
 	
 }
 
@@ -278,7 +278,7 @@ public static function gallery_shortcode_bootstrap($attr) {
 			/* see gallery_shortcode() in wp-includes/media.php */
 		</style>";
 	$size_class = sanitize_html_class( $size );
-	$gallery_div = "<div id='$selector' class='row gallery galleryid-{$id} gallery-size-{$size_class}'>";
+	$gallery_div = "<div id='$selector' class='row-fluid gallery galleryid-{$id} gallery-size-{$size_class}'>";
 	$output = apply_filters( 'gallery_style', $gallery_style . "\n\t\t" . $gallery_div );
 
 	$i = 1;
@@ -315,7 +315,7 @@ public static function gallery_shortcode_bootstrap($attr) {
 		}
 		$output .= "</div>";
 
-				if($numberofcolumns == 6) 
+				/*if($numberofcolumns == 6) 
 				{
 					if(0 == ($i % 6)){$output .= '<div class="clearfix visible-md visible-lg"></div>'; }
 					if(0 == ($i % 4)){$output .= '<div class="clearfix visible-sm"></div>'; }
@@ -338,7 +338,7 @@ public static function gallery_shortcode_bootstrap($attr) {
 			    elseif($numberofcolumns == 2) 
 				{
 					if(0 == ($i % 2)){$output .= '<div class="clearfix invisible-xs"></div>'; }
-				}
+				}*/
 	$i++;
 	}
 
