@@ -278,9 +278,9 @@ public static function gallery_shortcode_bootstrap($attr) {
 			/* see gallery_shortcode() in wp-includes/media.php */
 		</style>";
 	$size_class = sanitize_html_class( $size );
-	$gallery_div = "<div id='$selector' class='row-fluid gallery galleryid-{$id} gallery-size-{$size_class}'>";
+	$gallery_div = "<div id='$selector' gallery galleryid-{$id} gallery-size-{$size_class}'>";
 	$output = apply_filters( 'gallery_style', $gallery_style . "\n\t\t" . $gallery_div );
-
+	$output .= '<div class="row-fluid">'; 
 	$i = 1;
 	$numberofcolumns = get_option('number_of_columns', 4 );	
 	$classes = twitterbootstrap_galleries_get_grid_classes($numberofcolumns);
@@ -315,35 +315,34 @@ public static function gallery_shortcode_bootstrap($attr) {
 		}
 		$output .= "</div>";
 
-				/*if($numberofcolumns == 6) 
+				if($numberofcolumns == 6) 
 				{
-					if(0 == ($i % 6)){$output .= '<div class="clearfix visible-md visible-lg"></div>'; }
-					if(0 == ($i % 4)){$output .= '<div class="clearfix visible-sm"></div>'; }
-					if(0 == ($i % 2)){$output .= '<div class="clearfix visible-xs"></div>'; }
+					if(0 == ($i % 6)){$output .= '</div><div class="row-fluid">'; }
+					
 			    }	
 			    elseif($numberofcolumns == 4) 
 				{
-					if(0 == ($i % 4)){$output .= '<div class="clearfix visible-md visible-lg"></div>'; }
-					if(0 == ($i % 2)){$output .= '<div class="clearfix visible-sm"></div>'; }
+					if(0 == ($i % 4)){$output .= '</div><div class="row-fluid">'; }
+					
 			    }
 			    elseif($numberofcolumns == 3) 
 				{
-					if(0 == ($i % 3)){$output .= '<div class="clearfix visible-md visible-lg"></div>'; }
+					if(0 == ($i % 3)){$output .= '</div><div class="row-fluid">'; }
 				}
 				elseif($numberofcolumns == 31) 
 				{
-					if(0 == ($i % 3)){$output .= '<div class="clearfix visible-md visible-lg"></div>'; }
-					if(0 == ($i % 2)){$output .= '<div class="clearfix visible-sm"></div>'; }
+					if(0 == ($i % 3)){$output .= '</div><div class="row-fluid">'; }
+					
 				}
 			    elseif($numberofcolumns == 2) 
 				{
-					if(0 == ($i % 2)){$output .= '<div class="clearfix invisible-xs"></div>'; }
-				}*/
+					if(0 == ($i % 2)){$output .= '</div><div class="row-fluid">'; }
+				}
 	$i++;
 	}
 
 	$output .= "
-		</div>\n";
+		</div></div>\n";
 
 	return $output;
 }
